@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreatePostDto,UpdataPutDto } from './posts.Dto'
 import { PostModel } from './posts.model';
+import { ResultObject } from '../result/result.object'
 
 @Controller('posts')
 @ApiTags('帖子')
@@ -9,7 +10,14 @@ export class PostsController {
     @Get()
     @ApiOperation({summary: '帖子列表'})
     async index(){
-        return await PostModel.find()
+        const result = await PostModel.find()
+        if( result != null ){
+            return new ResultObject( 200 , '查询成功' , result)
+        }else if( result === null){
+            return new ResultObject( 200 , '查询成功' , result)
+        }else{
+            return new ResultObject( 500 , '查询成功' , result)
+        }
     }
 
     @Post()
